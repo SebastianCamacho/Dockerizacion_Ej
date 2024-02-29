@@ -5,6 +5,7 @@ WORKDIR /app
 COPY . .
 # Instala las dependencias sin una etapa intermedia innecesaria
 RUN npm install
+RUN npm run build
 # Construye la aplicación Angular en una etapa separada
 FROM nginx:1.23.3 AS nginx
 # Exporta el puerto 80
@@ -14,21 +15,3 @@ COPY --from=build /app/dist/app-nginx /usr/share/nginx/html
 # Inicia Nginx con la configuración por defecto
 CMD ["nginx", "-g", "daemon off;"]
 
-
-# FROM node:20.11.1 as build
-
-# WORKDIR /app
-
-# COPY . .
-
-# RUN npm install
-
-# RUN npm run build
-
-# FROM nginx:1.23.3 as prod
-
-# EXPOSE 80
-
-# COPY --from=build /app/dist/app-nginx /usr/share/nginx/html
-
-# CMD [ "nginx","-g","daemon off;" ]
